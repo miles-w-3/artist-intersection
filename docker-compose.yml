@@ -7,25 +7,30 @@ services:
     build: app/
     volumes:
       - ./app:/usr/src/app
-      - ./secrets:/secrets
     ports:
       - 9000:4000
+    secrets:
+      - db_password
   db:
-      image: mysql:8
-      ports:
-        - 3306:3306
-      volumes:
-        - ./db_bootstrap:/docker-entrypoint-initdb.d:ro
-      environment:
-        MYSQL_USER: webapp
-        MYSQL_PASSWORD_FILE: /run/secrets/secret_db_pw
-        MYSQL_ROOT_PASSWORD_FILE: /run/secrets/secret_db_root_pw
-      secrets:
-        - secret_db_pw
-        - secret_db_root_pw
+    restart: unless-stopped
+    tty: true
+    image: mysql:8
+    ports:
+      - 3306:3306
+    volumes:
+      - ./db_bootstrap:/docker-entrypoint-initdb.d:ro
+      - ./secrets:/secrets
+    environment:
+      MYSQL_DATABASE: ARTIST_INTERSECTION
+      MYSQL_USER: webapp
+      MYSQL_PASSWORD_FILE: /run/secrets/db_password
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+    secrets:
+      - db_password
+      - db_root_password
 
 secrets:
-  secret_db_pw:
+  db_password:
     file: ./secrets/db_password.txt
-  secret_db_root_pw:
+  db_root_password:
     file: ./secrets/db_root_password.txt
