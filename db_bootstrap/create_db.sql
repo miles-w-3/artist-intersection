@@ -9,7 +9,7 @@ CREATE TABLE WorkType (
   type_id INT NOT NULL auto_increment,
   type_name VARCHAR(50) NOT NULL,
 
-  CONSTRAINT pk PRIMARY KEY (type_id)
+  CONSTRAINT pk_0 PRIMARY KEY (type_id)
 );
 
 CREATE TABLE Artist (
@@ -21,7 +21,7 @@ CREATE TABLE Artist (
   total_commission_amt DECIMAL(13, 2) DEFAULT 0.00,
   location VARCHAR(30) NOT NULL,
 
-  CONSTRAINT pk PRIMARY KEY (artist_id),
+  CONSTRAINT pk_1 PRIMARY KEY (artist_id),
   CONSTRAINT fk_artist_favorite FOREIGN KEY (favorite_works_id)
     REFERENCES WorkType (type_id)
     ON UPDATE CASCADE
@@ -36,7 +36,7 @@ CREATE TABLE Collector (
   num_works_purchased INT NOT NULL DEFAULT 0,
   total_spend_amt DECIMAL(13, 2) DEFAULT 0.00,
 
-  CONSTRAINT pk PRIMARY KEY (collector_id),
+  CONSTRAINT pk_2 PRIMARY KEY (collector_id),
   CONSTRAINT fk_collector_favorite FOREIGN KEY (favorite_works_id)
     REFERENCES WorkType (type_id)
     ON UPDATE CASCADE
@@ -44,7 +44,7 @@ CREATE TABLE Collector (
 
 );
 
-CREATE TABLE Works (
+CREATE TABLE Work (
   work_id INT NOT NULL auto_increment,
   work_type_id INT NOT NULL,
   creator_id INT NOT NULL,
@@ -53,7 +53,7 @@ CREATE TABLE Works (
   current_price DECIMAL(13, 2),
   purchsed_by_id INT,
 
-  CONSTRAINT pk PRIMARY KEY (work_id),
+  CONSTRAINT pk_3 PRIMARY KEY (work_id),
   CONSTRAINT fk_work_type FOREIGN KEY (work_type_id)
     REFERENCES WorkType (type_id)
     ON UPDATE CASCADE
@@ -73,7 +73,7 @@ CREATE TABLE Admin (
   admin_id INT NOT NULL auto_increment,
   date_of_birth DATE,
 
-  CONSTRAINT pk PRIMARY KEY (admin_id)
+  CONSTRAINT pk_4 PRIMARY KEY (admin_id)
 );
 
 CREATE TABLE SuspendedArtist (
@@ -115,7 +115,7 @@ CREATE TABLE CommissionRequest (
     ON UPDATE CASCADE
     ON DELETE RESTRICT,
 
-  CONSTRAINT pk PRIMARY KEY (request_id)
+  CONSTRAINT pk_6 PRIMARY KEY (request_id)
 );
 
 -- Insert work types
@@ -133,7 +133,7 @@ VALUES ('Thomas Redman', 4, '1950-05-15', 'Zaragoza'),
   ('Herrick Fursey', 3, '1945-08-22', 'Xijiao');
 
 -- Insert Artist Works
-INSERT INTO Works (title, work_type_id, creator_id, current_price)
+INSERT INTO Work (title, work_type_id, creator_id, current_price)
 VALUES ('Stronghold', 1, 2, 7680.86), ('Fintone', 4, 4, 500.39),
   ('Konklab', 3, 7, 2822.66), ('Prodder', 3, 9, 4797.51), ('Y-find', 3, 7, 2748.58),
   ('Matsoft', 4, 6, 5348.33), ('Opela', 2, 4, 7878.03), ('Domainer', 4, 1, 6244.83),

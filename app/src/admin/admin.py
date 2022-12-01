@@ -1,9 +1,20 @@
 from flask import Blueprint
+from src.util import Util
 
 # Create a new blueprint for managers
 admin = Blueprint('admin', __name__)
 
-# add a route to this blueprint
+
 @admin.route('/admins')
-def get_all_managers():
-    return f'<h1>Getting all the collectors.</h1>'
+def get_all_admins():
+    return Util.query_db('SELECT * FROM Admin')
+
+
+@admin.route('/admins/<admin_id>')
+def get_admin_by_id(admin_id):
+    return Util.query_db(f'SELECT * FROM Admin WHERE admin_id={admin_id}')
+
+
+@admin.route('/suspended')
+def get_all_suspended():
+    return Util.query_db(f'SELECT * FROM Suspended')

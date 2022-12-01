@@ -1,6 +1,7 @@
 # import the Flask framework
 from flask import Flask, jsonify
 from flaskext.mysql import MySQL
+from src.util import Util
 
 # import the blueprint objects from their respective locations
 from src.artist.artist import artist
@@ -14,12 +15,10 @@ app = Flask(__name__)
 with open('/run/secrets/db_password') as pw_file:
     DB_PW = pw_file.readline().rstrip('\n')
 
-print(f"DB_PW is {repr(DB_PW)}")
-
 # register the blueprints we created with the current Flask app object.
 app.register_blueprint(artist, url_prefix='/arts')
 app.register_blueprint(collector, url_prefix='/cltr')
-app.register_blueprint(admin, url_prefix='/adm')
+app.register_blueprint(admin, url_prefix='/admin')
 
 
 app.config['SECRET_KEY'] = 'someCrazyS3cR3T!Key.!'
@@ -28,8 +27,12 @@ app.config['MYSQL_DATABASE_PORT'] = 3306
 app.config['MYSQL_DATABASE_USER'] = 'webapp'
 app.config['MYSQL_DATABASE_PASSWORD'] = DB_PW
 app.config['MYSQL_DATABASE_DB'] = 'ART_INTERSECTION'
+
 db_connection = MySQL()
 db_connection.init_app(app)
+print(f"get db is {db_connection.get_db()}")
+Util.init_db(db_connection)
+
 
 # --------------------------------------------------------------------
 # Create a function named hello world that
