@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, Response, request
 from src.util import Util
 # Create a new blueprint for managers
 collector= Blueprint('collector', __name__)
@@ -20,13 +20,43 @@ def get_collector_by_id(collector_id):
             f"on c.favorite_works_id = WT.type_id WHERE collector_id={collector_id};"
     return Util.query_db(query)
 
-@collector.route('/requests')
+@collector.route('/requests/')
 def get_all_requests():
     query = "SELECT * FROM CommissionRequest;"
     return Util.query_db(query)
 
-@collector.route('/requests/<request_id>')
-def get_work_by_id(request_id):
-    query = f"SELECT * FROM CommissionRequest WHERE request_id={request_id};"
-    return Util.query_db(query)
+@collector.route('/requests/<request_id>', methods = ['GET', 'POST'])
+def manage_work_requests(request_id):
+    Util.log(f"In route message, request is {repr(request_id)}, method is {repr(request.method)}")
+    # handle gets
+    if request.method == 'GET':
+        id = int(id)
+        query = f"SELECT * FROM CommissionRequest WHERE request_id={id};"
+        return Util.query_db(query)
+    elif request.method == 'POST':
+        title = request.form['title']
+        desc = request.form['desc']
+        workType = int(request.form['workType'])
+
+        #Util.log(f"In post block {repr(request_id)} | bool is {request_id == 'create'}")
+        #Util.log(f"Got POST: {request.form}")
+        # for creating a new request
+        if request_id == 'create':
+            Util.log(f"Three: {title}, {desc}, {workType}")
+            insert = "INSERT INTO CommissionRequest (title, info, work_type_id, requestor) " \
+                     f"VALUES ('{title}', '{desc}', {workType}, {Util.logged_in_id});"
+            Util.log(f"Request IS {insert}")
+            if Util.insert_db(insert):
+                return Response(status=200)
+            # return 403 if the post didn't work
+            return Response(status=403)
+            #result = Util.query_db(insert)
+            #Util.log(f"Result is: {result}")
+        elif request_id != 'create':
+            Util.log("didn't get in")
+        Util.log(f"After post block {repr(request_id)} | bool is {request_id == 'create'}")
+
+# @collector.route('/requests/create', methods = ['POST'])
+# def create_work_request():
+#     print(f"Got POST: {request.json}")
 

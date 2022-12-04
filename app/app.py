@@ -30,7 +30,6 @@ app.config['MYSQL_DATABASE_DB'] = 'ART_INTERSECTION'
 
 db_connection = MySQL()
 db_connection.init_app(app)
-print(f"get db is {db_connection.get_db()}")
 Util.init_db(db_connection)
 
 

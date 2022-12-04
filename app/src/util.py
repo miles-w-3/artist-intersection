@@ -3,6 +3,7 @@ from flaskext.mysql import MySQL
 
 class Util:
 
+    logged_in_id = 2
     db_connection = None
     #cursor = None
 
@@ -16,7 +17,8 @@ class Util:
 
     @classmethod
     def query_db(cls, query):
-        cur = cls.db_connection.get_db().cursor()
+        db = cls.db_connection.get_db()
+        cur = db.cursor()
         cur.execute(query)
         row_headers = [x[0] for x in cur.description]
         json_data = []
@@ -24,5 +26,22 @@ class Util:
         for row in theData:
             json_data.append(dict(zip(row_headers, row)))
         return jsonify(json_data)
+
+    @classmethod
+    def insert_db(cls, statement):
+        db = cls.db_connection.get_db()
+        cur = db.cursor()
+        try:
+            cur.execute(statement)
+        except Exception as e:
+            cls.log(f"Failed to insert to db {str(e)}")
+            return False
+        else:
+            db.commit()
+            return True
+
+    @classmethod
+    def log(cls, msg):
+        print(msg, flush=True)
 
 

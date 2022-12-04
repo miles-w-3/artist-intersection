@@ -17,9 +17,14 @@ def get_artist_by_id(artist_id):
            f" FROM Artist A JOIN WorkType WT on A.favorite_works_id = WT.type_id WHERE artist_id={artist_id};"
     return Util.query_db(query)
 
+@artist.route('/types')
+def get_all_types():
+    query = "SELECT type_name AS label, type_id AS value FROM WorkType;"
+    return Util.query_db(query)
+
 @artist.route('/works')
 def get_all_works():
-    query = "SELECT * FROM Work"
+    query = "SELECT * FROM Work;"
     return Util.query_db(query)
 
 @artist.route('/work_id/<work_id>')
