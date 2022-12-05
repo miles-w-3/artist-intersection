@@ -12,6 +12,13 @@ def get_all_collectors():
             "on c.favorite_works_id = WT.type_id;"
     return Util.query_db(query)
 
+# add a route to this blueprint
+@collector.route('/names')
+def get_collector_select():
+    query = "SELECT collector_id AS value, name AS label " \
+            "FROM Collector;"
+    return Util.query_db(query)
+
 @collector.route('/collectors/<collector_id>')
 def get_collector_by_id(collector_id):
     query = "SELECT collector_id AS id, name, date_of_birth AS dob, " \
@@ -37,6 +44,7 @@ def manage_work_requests(request_id):
         title = request.form['title']
         desc = request.form['desc']
         workType = int(request.form['workType'])
+        logged_in = int(request.form['cltr'])
 
         #Util.log(f"In post block {repr(request_id)} | bool is {request_id == 'create'}")
         #Util.log(f"Got POST: {request.form}")
@@ -44,7 +52,7 @@ def manage_work_requests(request_id):
         if request_id == 'create':
             Util.log(f"Three: {title}, {desc}, {workType}")
             insert = "INSERT INTO CommissionRequest (title, info, work_type_id, requestor) " \
-                     f"VALUES ('{title}', '{desc}', {workType}, {Util.logged_in_id});"
+                     f"VALUES ('{title}', '{desc}', {workType}, {logged_in});"
             Util.log(f"Request IS {insert}")
             if Util.insert_db(insert):
                 return Response(status=200)

@@ -1,4 +1,4 @@
-from flask import Blueprint
+from flask import Blueprint, request, Response
 from src.util import Util
 
 artist = Blueprint('artist', __name__)
@@ -27,7 +27,26 @@ def get_all_works():
     query = "SELECT * FROM Work;"
     return Util.query_db(query)
 
-@artist.route('/work_id/<work_id>')
+@artist.route('/works/<work_id>', methods = ['GET', 'POST'])
 def get_work_by_id(work_id):
-    query = f"SELECT * FROM Work WHERE work_id={work_id};"
+    if request.method == 'GET':
+        query = f"SELECT * FROM Work WHERE work_id={work_id};"
+        return Util.query_db(query)
+    elif request.method == 'POST':
+        title = request.form['title']
+        price = float(request.form['price'])
+        workType = int(request.form['workType'])
+        logged_in = int(request.form['login'])
+        if work_id == 'create':
+            insert = "INSERT INTO Work (title, work_type_id, creator_id, current_price) " \
+                    f"VALUES ('{title}', {workType}, {logged_in}, {price});"
+            if Util.insert_db(insert):
+                return Response(status=200)
+            return Response(status=403)
+
+
+@artist.route('/names')
+def get_artist_select():
+    query = "SELECT artist_id AS value, name AS label " \
+            "FROM Artist;"
     return Util.query_db(query)
