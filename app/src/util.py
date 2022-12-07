@@ -17,6 +17,12 @@ class Util:
 
     @classmethod
     def query_db(cls, query):
+        json_data = cls.query_db_json(query)
+        return jsonify(json_data)
+
+    @classmethod
+    # get the json object before wrapping
+    def query_db_json(cls, query):
         db = cls.db_connection.get_db()
         cur = db.cursor()
         cur.execute(query)
@@ -25,7 +31,7 @@ class Util:
         theData = cur.fetchall()
         for row in theData:
             json_data.append(dict(zip(row_headers, row)))
-        return jsonify(json_data)
+        return json_data
 
     @classmethod
     def insert_db(cls, statement):

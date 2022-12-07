@@ -68,3 +68,7 @@ def manage_work_requests(request_id):
 # def create_work_request():
 #     print(f"Got POST: {request.json}")
 
+
+#{{artistSelect.data.splice(0)}}
+
+#[{{artistProfile.data.find(element => element.id == appsmith.store.selectArtist)}}]

@@ -1,4 +1,4 @@
-from flask import Blueprint, request, Response
+from flask import Blueprint, request, Response, jsonify
 from src.util import Util
 
 artist = Blueprint('artist', __name__)
