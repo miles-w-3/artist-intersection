@@ -19,7 +19,8 @@ def get_artist_by_id(artist_id):
 
 @artist.route('artists/works/<artist_id>')
 def get_works_by_artist(artist_id):
-    query = f"SELECT * FROM Work WHERE creator_id={artist_id};"
+    query = "SELECT title, date_created, current_price, type_name AS genre, name AS purchased_by " \
+        f"FROM (Work w JOIN WorkType wt on w.work_type_id = wt.type_id) LEFT JOIN Collector c ON purchsed_by_id = c.collector_id WHERE creator_id={artist_id};"
     return Util.query_db(query)
 
 @artist.route('/types')
