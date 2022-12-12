@@ -27,6 +27,13 @@ def get_collector_by_id(collector_id):
             f"on c.favorite_works_id = WT.type_id WHERE collector_id={collector_id};"
     return Util.query_db(query)
 
+@collector.route('/collectors/requests/<collector_id>')
+def get_works_by_collector(collector_id):
+    query = "SELECT title, info, type_name AS genre, name AS accepted_by " \
+            "FROM (CommissionRequest c JOIN WorkType wt ON c.work_type_id = wt.type_id) " \
+            f"LEFT JOIN Artist a ON accepted_id = a.artist_id WHERE requestor={collector_id};"
+    return Util.query_db(query)
+
 @collector.route('/requests/')
 def get_all_requests():
     query = "SELECT * FROM CommissionRequest;"
