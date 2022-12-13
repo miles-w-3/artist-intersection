@@ -51,7 +51,7 @@ CREATE TABLE Work (
   title VARCHAR(30) NOT NULL,
   date_created DATETIME DEFAULT CURRENT_TIMESTAMP,
   current_price DECIMAL(13, 2),
-  purchsed_by_id INT,
+  purchased_by_id INT,
 
   CONSTRAINT pk_3 PRIMARY KEY (work_id),
   CONSTRAINT fk_work_type FOREIGN KEY (work_type_id)
@@ -62,7 +62,7 @@ CREATE TABLE Work (
     REFERENCES Artist (artist_id)
     ON UPDATE CASCADE
     ON DELETE RESTRICT,
-  CONSTRAINT fk_purchased_by FOREIGN KEY (purchsed_by_id)
+  CONSTRAINT fk_purchased_by FOREIGN KEY (purchased_by_id)
     REFERENCES Collector (collector_id)
     ON UPDATE CASCADE
     ON DELETE RESTRICT

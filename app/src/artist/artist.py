@@ -17,10 +17,11 @@ def get_artist_by_id(artist_id):
            f" FROM Artist A JOIN WorkType WT on A.favorite_works_id = WT.type_id WHERE artist_id={artist_id};"
     return Util.query_db(query)
 
-@artist.route('artists/works/<artist_id>')
+@artist.route('artist/works/<artist_id>')
 def get_works_by_artist(artist_id):
+    Util.log(f"HERE, id {artist_id}")
     query = "SELECT title, date_created, current_price, type_name AS genre, name AS purchased_by " \
-        f"FROM (Work w JOIN WorkType wt on w.work_type_id = wt.type_id) LEFT JOIN Collector c ON purchsed_by_id = c.collector_id WHERE creator_id={artist_id};"
+        f"FROM (Work w JOIN WorkType wt on w.work_type_id = wt.type_id) LEFT JOIN Collector c ON purchased_by_id = c.collector_id WHERE creator_id={artist_id};"
     return Util.query_db(query)
 
 @artist.route('/types')
