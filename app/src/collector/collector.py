@@ -41,7 +41,6 @@ def get_all_requests():
 
 @collector.route('/request/<request_id>', methods = ['GET', 'POST'])
 def manage_work_requests(request_id):
-    Util.log(f"In route message, request is {repr(request_id)}, method is {repr(request.method)}")
     # handle gets
     if request.method == 'GET':
         id = int(id)
@@ -53,29 +52,11 @@ def manage_work_requests(request_id):
         workType = int(request.form['workType'])
         logged_in = int(request.form['cltr'])
 
-        #Util.log(f"In post block {repr(request_id)} | bool is {request_id == 'create'}")
-        #Util.log(f"Got POST: {request.form}")
         # for creating a new request
         if request_id == 'create':
-            Util.log(f"Three: {title}, {desc}, {workType}")
             insert = "INSERT INTO CommissionRequest (title, info, work_type_id, requestor) " \
                      f"VALUES ('{title}', '{desc}', {workType}, {logged_in});"
-            Util.log(f"Request IS {insert}")
             if Util.insert_db(insert):
                 return Response(status=200)
             # return 403 if the post didn't work
             return Response(status=403)
-            #result = Util.query_db(insert)
-            #Util.log(f"Result is: {result}")
-        elif request_id != 'create':
-            Util.log("didn't get in")
-        Util.log(f"After post block {repr(request_id)} | bool is {request_id == 'create'}")
-
-# @collector.route('/requests/create', methods = ['POST'])
-# def create_work_request():
-#     print(f"Got POST: {request.json}")
-
-
-#{{artistSelect.data.splice(0)}}
-
-#[{{artistProfile.data.find(element => element.id == appsmith.store.selectArtist)}}]
