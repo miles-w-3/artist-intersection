@@ -4,6 +4,9 @@ Final project for CS3200
 ## Overview
 ArtistIntersection is a sample database to be used on an art commission and marketplace website. It has been crafted around three personas: `Artists`, who can create listings for their artwork on the platform. `Collectors`, who can browse artist listings and create artwork requests. `Admins`, who can view sensitive information on user profiles and suspend Artists, prohibiting them from uploading any more artwork.
 
+## Local environment
+Be sure to create `secrets/db_password.txt` and `secrets/db_root_password.txt`. Then run `docker compose up`.
+
 ## REST API and Appsmith Implementation
 We designed the current REST routes to provide data that we use in an AppSmith application. To facilitate this, our `GET` routes query the database based on the route provided. We will often rename and cherry-pick columns that we want to display to be more user-friendly. This data is then converted to python dictionary object which is serialized as JSON so that it can be easily sent and interpreted by appsmith widgets.
 
@@ -17,4 +20,4 @@ Secret management is accomplished through docker secrets. The passwords are stor
 
 Finally, we use an ngrok instance to allow our API to be accessible to the appsmith instance.
 
-We have a demo of our program and appsmith application located [here]().
+We have a demo of our program and appsmith application located [here](https://drive.google.com/file/d/1uBqSaZSzWZOvZKL8JHeqEytlznCp_xb4/view?usp=sharing).
